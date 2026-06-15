@@ -1,0 +1,4 @@
+interface:
+  display_name: "ML Project Planning"
+  short_description: "Plan ML projects before implementation."
+  default_prompt: "Help me define and plan an early-stage machine learning project."
