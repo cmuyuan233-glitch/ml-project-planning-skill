@@ -160,13 +160,21 @@ Before recommending implementation, verify:
 - The prediction unit and prediction timing / `as_of_date` semantics are explicit.
 - Positive, negative, unknown, weak, and review-only labels are separated.
 - The data availability mode is stated and load-bearing assumptions have validation hooks; nothing about data is silently assumed.
-- A success threshold / kill-go bar exists, and ML beats a non-ML baseline.
+- A success threshold / kill-go bar exists, and a non-ML heuristic baseline plus the `X-000` (heuristic-vs-ML) experiment are defined. Whether ML actually beats the baseline is decided by that experiment, not asserted here.
 - Leakage risks are listed and blocked by policy.
 - Calibration/test distribution policy is clear.
 - Fairness/compliance obligations are addressed (or explicit low-stakes N/A).
 - Training-serving parity and a monitoring/retraining plan exist for production models.
 - EDA and experiment-only decisions are not hard-coded as engineering facts.
 - Output artifacts and manifests are specified; non-goals and environment restrictions are recorded.
+
+## Adoption Gate Before Deployment
+
+These are checked after experiments run, not before implementation:
+
+- The `X-000` experiment shows ML clears the success threshold and beats the non-ML baseline by enough to justify its cost; otherwise ship the heuristic or rescope.
+- Calibration, slice, and (if applicable) fairness metrics meet their thresholds.
+- For causal framing, uplift improves the acted-on outcome (not just prediction accuracy).
 
 Use `references/completion_contracts.md` (canonical gates) and `references/quality_rubric.md` for scoring. New terms are defined in `references/glossary.md`, and `references/worked_example.md` shows a full filled-in plan for a private-data case.
 
