@@ -1,19 +1,27 @@
 # Completion Contracts
 
+This file is the canonical source of the stage gates. The gate table in `SKILL.md` and the scoring rubric in `references/quality_rubric.md` summarize these; if they ever disagree, this file wins.
+
 Use these contracts before advancing from one planning stage to the next. If a contract fails, stop and ask the smallest question that unlocks the next step, or draft the missing section with explicit assumptions for user approval.
+
+Data-availability note: a contract that requires evidence (counts, distributions, coverage) is satisfied in `data_described`/`data_absent` mode by a stated assumption plus a validation hook. The requirement is that the item is explicit, not that real data was inspected. Never silently assume; record it.
 
 ## Project Definition Brief
 
 Required:
 
 - business decision/action and user of the output;
+- problem framing: ML-vs-heuristic, problem type, predictive-vs-causal, modality;
 - prediction unit and entity/time keys;
 - prediction timing or `as_of_date` semantics;
 - model output contract;
 - positive, negative, unknown, weak, and review-only label policy;
 - label source of truth and trust tiers;
 - false-positive and false-negative cost;
+- success threshold / kill-go bar and rough expected value;
 - primary evaluation priority;
+- data availability mode and a feasibility judgment;
+- fairness/compliance obligations (or an explicit low-stakes N/A note);
 - forbidden sources/fields/operations;
 - non-goals;
 - open questions.
@@ -28,7 +36,29 @@ Must not advance when:
 - "good/bad", "risk", "churn", "operate", or similar target words are undefined;
 - one prediction row is ambiguous;
 - label truth is unknown;
-- prediction time is missing.
+- prediction time is missing;
+- the data availability mode is unstated (default to `data_described` and proceed on assumptions rather than blocking).
+
+## Data Requirements Spec
+
+Required:
+
+- one current data availability mode (`data_in_hand` / `data_partial` / `data_described` / `data_absent`);
+- required data derived from the plan, with grain and minimum fields;
+- a feasibility judgment (real numbers if data is in hand; otherwise explicit assumptions + validation hooks);
+- access/privacy constraints and blocked fields;
+- a labeling plan when labels must be created;
+- an assumptions register entry for every unverifiable load-bearing claim.
+
+May advance when:
+
+- the plan can proceed on stated assumptions even if no data was inspected;
+- each `need_data` boundary has an assumption and a validation hook.
+
+Must not advance when:
+
+- the plan silently assumes data exists, is clean, is large enough, or is shareable;
+- load-bearing assumptions are missing from the register.
 
 ## Boundary Decision Register
 
@@ -128,6 +158,8 @@ Required:
 - feature table contract;
 - dataset builder contract;
 - model, calibration, evaluation, scoring, and delivery separation;
+- serving mode and training-serving parity check;
+- monitoring, drift, retraining trigger, and feedback-loop policy;
 - artifact and manifest policy;
 - leakage controls;
 - time/as_of policy;
@@ -144,4 +176,5 @@ Must not advance when:
 - code/artifact ownership is ambiguous;
 - database/network/environment rules are missing;
 - model score and business decision are conflated;
+- training-serving parity is undefined or no monitoring/retraining plan exists for a production model;
 - no manifest/versioning policy exists.

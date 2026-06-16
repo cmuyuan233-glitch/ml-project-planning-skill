@@ -91,7 +91,52 @@ Expected behavior:
 - Require `as_of_date`.
 - Separate metadata from model features.
 
-## Case 7: Existing Project Reframe
+## Case 7: Private / Undisclosed Data
+
+Prompt:
+
+```text
+I want to predict equipment failure, but the data is confidential and I can't share it.
+```
+
+Expected behavior:
+
+- Do not stop or demand the data.
+- Set data availability mode to `data_described` (or `data_absent` if it does not exist yet).
+- Plan on stated assumptions and record them in an assumptions register with validation hooks.
+- Mark feasibility (label volume, base rate) as `need_data`, not a blocker.
+- Produce a full plan that the first real data pull can validate or rescope.
+
+## Case 8: No Data Yet / Cold Start
+
+Prompt:
+
+```text
+We have an idea for a model but we haven't collected any data yet.
+```
+
+Expected behavior:
+
+- Set mode `data_absent`.
+- Produce a data acquisition + labeling plan (what to log, how to label, volume/budget).
+- Keep the rest of the plan as hypotheses with validation hooks.
+- Do not pretend the model can be evaluated before data exists.
+
+## Case 9: Intervention Framed As Prediction (Causal Trap)
+
+Prompt:
+
+```text
+Predict which customers will churn so we can send them a discount, and just build the most accurate churn classifier.
+```
+
+Expected behavior:
+
+- Flag the predict-vs-act gap: the action makes this a causal/uplift question, not pure prediction.
+- Recommend a predictive baseline now and an uplift experiment (X-005) once treatment/control data exists.
+- Define the non-ML heuristic baseline to beat.
+
+## Case 10: Existing Project Reframe
 
 Prompt:
 
