@@ -65,6 +65,9 @@ Domain scores, priors, rule-combinations. Usually `experiment_feature`.
 - Emit missingness and drift summaries.
 - Emit feature source manifest.
 - Keep derived features reproducible from source artifacts.
+- Confirm each baseline feature is actually available at serving time with the same `as_of_date` semantics as training (training-serving parity). If a feature is unavailable or delayed at inference, drop it from baseline or define identical imputation for both train and serve.
+
+When data is not yet in hand, mark feature existence and serving availability as assumptions with validation hooks in `references/data_requirements_spec.md`.
 
 ## Completion Contract
 
