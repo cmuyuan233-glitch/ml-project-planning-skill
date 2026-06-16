@@ -7,10 +7,13 @@ Use this after the Project Definition Brief. The goal is to separate decisions t
 | Status | Meaning |
 |---|---|
 | `fixed_now` | Can be decided before EDA or model experiments. |
+| `need_data` | Cannot be decided until data is collected, shared, or labeled. Plan continues on a stated assumption. |
 | `need_eda` | Requires exploratory data analysis before fixing. |
 | `need_experiment` | Requires model or ablation experiments before fixing. |
 | `deferred` | Important but intentionally postponed. |
 | `rejected` | Considered and rejected. |
+
+When data is absent, described-only, or restricted, do not force a `fixed_now` or `need_eda` decision. Use `need_data` and pair it with an assumption + validation hook in the Data Requirements Spec.
 
 ## Fixed Engineering Principles
 
@@ -31,6 +34,16 @@ Use this after the Project Definition Brief. The goal is to separate decisions t
 | E-002 | Which labels are trustworthy? |  | conflict and age analysis | label policy |
 | E-003 | Which features are missing, unstable, or risky? |  | missingness, drift, leakage audit | feature policy |
 
+## Boundaries Requiring Data
+
+Use when a decision is blocked only by data access, volume, or labeling. The plan proceeds on the stated assumption; the validation hook is run once data exists.
+
+| ID | Boundary Question | Working Assumption | Data Needed To Confirm | Validation Hook | Affects |
+|---|---|---|---|---|---|
+| D-001 | Are there enough labeled positives to model this? |  | label volume + base rate | label EDA when data arrives | feasibility, scope |
+| D-002 | Do candidate features actually exist at `as_of_date`? |  | feature coverage at cutoff | time/coverage EDA | feature plan |
+| D-003 | Is label truth trustworthy and consistent? |  | conflict/agreement stats | label trust EDA | label policy |
+
 ## Boundaries Requiring Experiments
 
 | ID | Boundary Question | Current Default | Required Experiment | Affects |
@@ -47,6 +60,6 @@ Use this after the Project Definition Brief. The goal is to separate decisions t
 
 ## Completion Contract
 
-This register is complete enough for architecture work only when every important unresolved question is assigned to `fixed_now`, `need_eda`, `need_experiment`, `deferred`, or `rejected`.
+This register is complete enough for architecture work only when every important unresolved question is assigned to `fixed_now`, `need_data`, `need_eda`, `need_experiment`, `deferred`, or `rejected`.
 
-Do not leave key decisions as informal prose. If a decision needs data, create a `need_eda` row. If it needs model evidence, create a `need_experiment` row.
+Do not leave key decisions as informal prose. If a decision is blocked by data access/volume/labeling, create a `need_data` row with an assumption and validation hook. If it needs analysis of data already in hand, create a `need_eda` row. If it needs model evidence, create a `need_experiment` row.
