@@ -2,6 +2,8 @@
 
 EDA should answer boundary questions. Avoid broad wandering analysis unless needed for data quality.
 
+When data is not yet available (`data_described` or `data_absent`), do not skip this step. Instead, write each EDA item as a **validation hook**: the exact analysis to run on the first real data pull to confirm or refute an assumption from `references/data_requirements_spec.md`. Each `need_data` boundary should map to a hook here.
+
 ## EDA Inventory
 
 | EDA ID | Boundary | Question | Input Data | Grain | Output Artifact | Decision Enabled |

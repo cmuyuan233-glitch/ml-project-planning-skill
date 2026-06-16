@@ -15,10 +15,14 @@ Use this after the baseline dataset and evaluation protocol are defined.
 
 | Experiment ID | Boundary | Variant A | Variant B | Hold Constant | Metrics | Decision Rule |
 |---|---|---|---|---|---|---|
+| X-000 | Is ML justified? | non-ML heuristic baseline | first ML baseline | labels/eval | primary + cost | adopt ML only if it clears the success threshold and beats the heuristic enough to justify its cost |
 | X-001 | Model family | baseline model | candidate model | labels/features/splits/calibration | primary + slice metrics | candidate wins only if overall and key slices improve |
 | X-002 | Calibration | raw score | calibrated score | trained model/features/splits | ECE/Brier/reliability | choose best calibrated option without damaging precision/recall materially |
 | X-003 | Sampling | natural training | weighted/sampled training | calib/test natural | model + calibration metrics | use only if it improves target metric and calibration remains acceptable |
 | X-004 | Weak/derived evidence | without source | with source | all else fixed | overall + source-only slice | admit only if useful and stable |
+| X-005 | (causal framing only) targeting policy | predictive score targeting | uplift/treatment-effect targeting | population/budget | uplift/Qini + business outcome | use uplift only if it improves the acted-on outcome, not just prediction accuracy |
+
+Drop X-005 when the project is purely predictive. Keep X-000 always: it forces ML to earn its place against a heuristic.
 
 ## Reporting Requirements
 

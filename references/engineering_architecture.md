@@ -44,6 +44,7 @@ source snapshots
   -> evaluation
   -> scoring
   -> delivery policy
+  -> monitoring + feedback loop
 ```
 
 ## Layer Contracts
@@ -94,6 +95,27 @@ source snapshots
 - policy output:
 - review/audit outputs:
 
+### Serving & Training-Serving Parity
+
+The most common production failure is that features computed at serving time differ from those computed in training.
+
+- serving mode: batch / online / streaming
+- where features come from at inference time (must match training `as_of_date` semantics):
+- features unavailable or delayed at serving time (must be excluded or imputed identically):
+- parity check: same code/contract builds train and serve features? yes/no
+
+### Monitoring & Feedback Loop
+
+A model is not done at deployment; it decays. Plan this before launch.
+
+- input drift / data-quality monitors:
+- prediction distribution and score-stability monitors:
+- performance monitoring once labels mature (and label latency):
+- fairness/slice monitoring over time:
+- retraining trigger: scheduled / drift-based / performance-based
+- rollout strategy: shadow / canary / A-B / full
+- feedback-loop risk: do today's predictions shape tomorrow's labels or features? how is it controlled?
+
 ## Manifest Policy
 
 Every stage should record:
@@ -114,6 +136,6 @@ Every stage should record:
 
 ## Completion Contract
 
-The architecture is complete enough for implementation planning only when it defines repository layout, data access rules, layer contracts, artifact/manifest policy, leakage controls, time policy, non-goals, and non-blocking validation work.
+The architecture is complete enough for implementation planning only when it defines repository layout, data access rules, layer contracts, artifact/manifest policy, leakage controls, time policy, serving and training-serving parity, monitoring and feedback-loop policy, non-goals, and non-blocking validation work.
 
-Do not move to implementation if model outputs and business decisions are conflated, environment restrictions are missing, or artifact ownership is ambiguous.
+Do not move to implementation if model outputs and business decisions are conflated, environment restrictions are missing, artifact ownership is ambiguous, training-serving parity is undefined, or there is no monitoring/retraining plan for a model that will run in production.

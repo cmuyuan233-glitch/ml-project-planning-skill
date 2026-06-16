@@ -19,8 +19,10 @@ Every feature should be intentionally admitted. Do not mix metadata, labels, aud
 
 ## Feature Table
 
-| Feature | Class | Why | How To Build | Source Fields | Leakage Notes |
-|---|---|---|---|---|---|
+| Feature | Class | Why | How To Build | Source Fields | Leakage Notes | Serving Availability / Parity |
+|---|---|---|---|---|---|---|
+
+`Serving Availability / Parity` records whether the feature is available at serving time with the same `as_of_date` semantics as training, and how parity is guaranteed (same code/contract, or identical imputation). When data is not yet in hand, mark this as an assumption with a validation hook in `references/data_requirements_spec.md`.
 
 ## Recommended Feature Groups
 
@@ -65,9 +67,12 @@ Domain scores, priors, rule-combinations. Usually `experiment_feature`.
 - Emit missingness and drift summaries.
 - Emit feature source manifest.
 - Keep derived features reproducible from source artifacts.
+- Confirm each baseline feature is actually available at serving time with the same `as_of_date` semantics as training (training-serving parity). If a feature is unavailable or delayed at inference, drop it from baseline or define identical imputation for both train and serve.
+
+When data is not yet in hand, mark feature existence and serving availability as assumptions with validation hooks in `references/data_requirements_spec.md`.
 
 ## Completion Contract
 
-The feature plan is complete only when every feature has class, why, how to build, source fields, and leakage notes.
+The feature plan is complete only when every feature has class, why, how to build, source fields, leakage notes, and a serving availability / parity entry (real or assumption + validation hook).
 
 Do not admit experiment features into the baseline without an explicit experiment decision. Do not admit metadata-only or blocked fields into model input.
