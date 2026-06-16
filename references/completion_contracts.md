@@ -65,6 +65,7 @@ Must not advance when:
 Required:
 
 - fixed engineering boundaries;
+- data-blocked boundaries (`need_data`) when data is restricted, absent, or unlabeled;
 - EDA-required boundaries;
 - experiment-required boundaries;
 - deferred or rejected items when relevant;
@@ -72,13 +73,15 @@ Required:
 
 May advance when:
 
-- every important uncertainty has a status;
+- every important uncertainty has a status (`fixed_now`, `need_data`, `need_eda`, `need_experiment`, `deferred`, or `rejected`);
+- each `need_data` item names a working assumption and a validation hook;
 - each `need_eda` item names the evidence needed;
 - each `need_experiment` item names the comparison needed.
 
 Must not advance when:
 
 - unresolved decisions remain as prose only;
+- a data-blocked decision is left without a working assumption and validation hook;
 - experiment choices such as model family, calibration, or sampling are hard-coded without evidence.
 
 ## EDA Plan
@@ -111,7 +114,8 @@ Required for each feature:
 - why it is useful;
 - how to build it;
 - source fields;
-- leakage notes.
+- leakage notes;
+- serving availability / training-serving parity (real, or an assumption + validation hook).
 
 May advance when:
 
