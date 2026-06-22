@@ -47,6 +47,7 @@ These gates are mandatory. Be polite but do not bypass them. In `data_described`
 | Label definition/source | feature admission, model plan, experiment matrix | Define positive/negative/unknown/review-only labels and trust tiers. |
 | Error cost + success threshold | model comparison, threshold policy | Clarify FP/FN cost and the minimum performance worth shipping. |
 | Data availability mode | feasibility claims, EDA, scoring plan | State whether data is in hand, described, or absent; continue on assumptions if needed. |
+| Real-data safety boundary, when data will be inspected or processed | EDA, data extraction, profiling, dataset export, external tool use | Apply the data safety gate: approved inputs, processing location, no-export rule, raw-display policy, sensitive fields, and output path. |
 | Boundary register | engineering architecture, implementation plan | Create or update fixed/data/EDA/experiment/deferred boundaries first. |
 
 If a gate blocks progress, give the smallest useful next question or draft the missing section with explicit assumptions for user approval.
@@ -59,6 +60,7 @@ Users often ask for implementation before the ML problem is safe to implement. W
 - If asked to build features before prediction timing is clear, stop and define `as_of_date`.
 - If asked to use convenient fields that look like labels, audit/review outcomes, future behavior, or downstream scores, flag leakage and classify them as blocked or metadata-only.
 - If the user has no data or cannot share it, do not stop: set the data availability mode, plan on stated assumptions, and attach validation hooks. Never silently assume data exists, is clean, is large enough, or is shareable.
+- If asked to inspect files, query tables, run EDA/code, or export artifacts over real user data before a safety boundary is explicit, stop and apply the data safety gate first.
 - If the action triggered by the model is the real goal, check for the causal/uplift trap instead of optimizing prediction accuracy alone.
 - If no non-ML baseline exists, define one before comparing models.
 - If asked to run broad EDA, tie the EDA back to unresolved boundaries (or write it as a validation hook when data is absent).
@@ -74,8 +76,9 @@ Before defining details, settle the shape of the work:
 - Is ML needed, or is a heuristic enough? Name the non-ML baseline either way.
 - Problem type and modality, and whether the real question is predictive or causal/uplift.
 - Data availability mode: `data_in_hand`, `data_partial`, `data_described`, or `data_absent`. If unstated, ask one short question and otherwise assume `data_described`.
+- If real data, samples, schemas, logs, or user-data code execution are involved, confirm the data safety boundary before reading or processing them.
 
-Use `references/problem_framing.md` and `references/data_requirements_spec.md`.
+Use `references/problem_framing.md`, `references/data_requirements_spec.md`, and `references/data_safety.md` when real data may be touched.
 
 ### 2. Start With Project Definition
 
@@ -91,9 +94,9 @@ Use `references/project_definition_brief.md`. Completion checks are in `referenc
 
 ### 3. Specify Data Requirements And Feasibility
 
-Derive required data top-down from the definition (not from whatever tables happen to exist). Record the availability mode, a feasibility judgment (real numbers if data is in hand; otherwise assumptions + validation hooks), access/privacy constraints, a labeling plan if labels must be created, and an assumptions register.
+Derive required data top-down from the definition (not from whatever tables happen to exist). Record the availability mode, a feasibility judgment (real numbers if data is in hand; otherwise assumptions + validation hooks), access/privacy constraints, the data safety note when real data will be touched, a labeling plan if labels must be created, and an assumptions register.
 
-Use `references/data_requirements_spec.md`.
+Use `references/data_requirements_spec.md` and `references/data_safety.md` when real data may be touched.
 
 ### 4. Separate Data Roles
 
@@ -160,6 +163,7 @@ Before recommending implementation, verify:
 - The prediction unit and prediction timing / `as_of_date` semantics are explicit.
 - Positive, negative, unknown, weak, and review-only labels are separated.
 - The data availability mode is stated and load-bearing assumptions have validation hooks; nothing about data is silently assumed.
+- Real data access has a safety boundary when applicable: approved inputs, processing location, no-export/no-network rules, raw-row display policy, sensitive fields, read-only source policy, and output location.
 - A success threshold / kill-go bar exists, and a non-ML heuristic baseline plus the `X-000` (heuristic-vs-ML) experiment are defined. Whether ML actually beats the baseline is decided by that experiment, not asserted here.
 - Leakage risks are listed and blocked by policy.
 - Calibration/test distribution policy is clear.

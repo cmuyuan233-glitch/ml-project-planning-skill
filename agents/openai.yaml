@@ -1,4 +1,4 @@
 interface:
   display_name: "ML Project Planning"
   short_description: "Plan ML projects before implementation, even when data is private or not yet collected."
-  default_prompt: "Help me define and plan an early-stage machine learning project."
+  default_prompt: "Use $ml-project-planning to define and plan an early-stage machine learning project before implementation."

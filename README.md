@@ -45,6 +45,8 @@ The skill picks one mode and adapts how much of the plan rests on assumptions vs
 
 When data cannot be inspected, every unverifiable claim becomes an explicit assumption with a **validation hook** (the EDA/experiment to run once data exists), and data-blocked decisions are tracked as `need_data` boundaries.
 
+When real data, samples, schemas, logs, or user-data code execution are involved, the skill first applies a data safety gate so approved inputs, processing boundaries, raw-display rules, external-transfer limits, and output locations are explicit.
+
 ### Artifact sequence
 
 1. Project Definition Brief
@@ -75,6 +77,7 @@ Planning may proceed before deployment; the actual "ML beats the baseline" decis
 | `references/project_definition_brief.md` | First artifact: decision, framing, prediction unit/timing, labels, error cost, success threshold, data, fairness. |
 | `references/problem_framing.md` | ML-vs-heuristic, problem type/modality, and the predictive-vs-causal/uplift trap. |
 | `references/data_requirements_spec.md` | Data availability modes, feasibility, labeling plan, and the assumptions register (slide thinking). |
+| `references/data_safety.md` | Safety gate before inspecting or processing real user data. |
 | `references/boundary_decision_register.md` | Typed status for every open decision: `fixed_now` / `need_data` / `need_eda` / `need_experiment` / `deferred` / `rejected`. |
 | `references/leakage_checklist.md` | Label / future / source / model / operational leakage controls. |
 | `references/eda_plan.md` | Boundary-driven EDA; becomes validation hooks when data is absent. |
