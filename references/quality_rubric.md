@@ -13,6 +13,7 @@ This rubric scores outputs; `references/completion_contracts.md` is the canonica
 | Error cost | Missing | Generic | FP/FN consequences and metric impact clear |
 | Success threshold | Missing | Mentioned | Kill/go bar + baseline + rough value |
 | Data availability | Missing | Implied | Mode chosen + feasibility + assumptions/hooks |
+| Data safety boundary | Missing when real data is touched | Partial constraints | Data Safety Note or explicit N/A before data access |
 | Leakage control | Missing | Some risks | Label/future/source/model leakage blocked |
 | Evaluation protocol | Missing | Metrics only | Metrics + slices + calibration/time policy |
 | Fairness/compliance | Missing | Mentioned | Slices + obligations, or explicit low-stakes N/A |
@@ -40,6 +41,7 @@ Scores scale with the number of items (max = 2 x number of items above).
 - Does not identify blocked leakage fields.
 - Makes EDA/experiment decisions as hard-coded facts.
 - Silently assumes data exists/is shareable instead of stating the data mode and assumptions.
+- Inspects, profiles, exports, or uploads real data before the safety boundary is explicit.
 - Frames an intervention problem as pure prediction when it is causal/uplift.
 - Skips ML necessity / heuristic baseline.
 - Ignores training-serving parity or post-deployment monitoring for a production model.
@@ -54,4 +56,5 @@ Regardless of score, mark the plan as not ready for implementation if any of the
 - feature plan includes labels, review outcomes, future data, or downstream model scores as model inputs;
 - calibration/test sampling policy is undefined for a classification/ranking project;
 - model choice is finalized before split/evaluation protocol is defined;
-- data is silently assumed (no availability mode and no assumptions register) when it was never inspected.
+- data is silently assumed (no availability mode and no assumptions register) when it was never inspected;
+- real data is inspected, profiled, exported, or sent to external tools before a Data Safety Note or explicit approval boundary exists.

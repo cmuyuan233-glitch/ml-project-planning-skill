@@ -15,6 +15,12 @@ The absence of usable data is a reason to *plan the data*, not to stop. When dat
 
 Never silently assume data exists, is clean, is large enough, or is shareable.
 
+## Real Data Safety Gate
+
+When the current mode is `data_in_hand` or `data_partial`, and the agent will inspect real files/tables/schemas/samples or run code over user data, apply `references/data_safety.md` before EDA or extraction.
+
+Record the resulting `Data Safety Note` here. If the safety boundary is unclear, do not inspect the data; continue in `data_described` mode on explicit assumptions and validation hooks.
+
 ## Data Availability Modes (slide thinking)
 
 Pick exactly one current mode. The mode controls how hard later gates are, and how much of the plan rests on assumptions rather than evidence. Modes can change as data becomes available; re-run the affected EDA/boundary items when they do.
@@ -58,6 +64,7 @@ If sufficiency is unknown and unverifiable now, do not block. Record it as a `ne
 - Privacy/compliance regime (PII, PHI, financial, regional law):
 - Can data leave a boundary (no-network / no-export rules)?
 - Fields that exist but must never be used (protected attributes, blocked leakage fields):
+- Approved inputs, raw-display policy, write/output location, and approval owner:
 
 ### 4. Labeling / annotation plan (required when labels do not already exist)
 
@@ -86,6 +93,7 @@ This spec is complete enough to continue when:
 - required data is derived from the plan, with grain and minimum fields, not from convenience tables;
 - a feasibility judgment exists (real numbers if data is in hand; otherwise explicit assumptions + validation hooks);
 - access/privacy constraints and blocked fields are listed;
+- if real data will be touched, a `Data Safety Note` records approved inputs, processing boundary, raw-display policy, no-export rule, output location, and approval owner;
 - a labeling plan exists whenever labels must be created;
 - every unverifiable claim appears in the assumptions register with a validation hook.
 

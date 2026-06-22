@@ -47,6 +47,7 @@ Required:
 - required data derived from the plan, with grain and minimum fields;
 - a feasibility judgment (real numbers if data is in hand; otherwise explicit assumptions + validation hooks);
 - access/privacy constraints and blocked fields;
+- a data safety note when real data, schemas, samples, exports, or user-data execution will be touched;
 - a labeling plan when labels must be created;
 - an assumptions register entry for every unverifiable load-bearing claim.
 
@@ -58,6 +59,7 @@ May advance when:
 Must not advance when:
 
 - the plan silently assumes data exists, is clean, is large enough, or is shareable;
+- real data is inspected, profiled, exported, or sent to external tools before the approved inputs, processing boundary, raw-display policy, no-export rule, output location, and approval owner are explicit;
 - load-bearing assumptions are missing from the register.
 
 ## Boundary Decision Register
